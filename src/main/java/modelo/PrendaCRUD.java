@@ -50,6 +50,23 @@ public class PrendaCRUD {
 
     }
         
+        public static int actualizaPrenda(Prenda miPrenda) {
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory(pom);
+        EntityManager manager = factory.createEntityManager();
+        String sql = "UPDATE Prenda p SET p.tipo = :tipo, p.cantidad = :cantidad, p.color = :color WHERE p.id = :id";
+        Query q = manager.createQuery(sql,Prenda.class);
+        q.setParameter("id", miPrenda.getId());
+        q.setParameter("tipo", miPrenda.getTipo());
+        q.setParameter("cantidad", miPrenda.getCantidad());
+        q.setParameter("color", miPrenda.getColor());
+        
+        manager.getTransaction().begin();
+        int filasAfectadas = q.executeUpdate();
+        manager.getTransaction().commit();
+        manager.close();
+        return filasAfectadas;      
+    }
+        
       public static Prenda getPrenda(int id) {  
         EntityManagerFactory factory = Persistence.createEntityManagerFactory(pom);
         EntityManager manager = factory.createEntityManager();
